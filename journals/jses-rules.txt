@@ -1,0 +1,171 @@
+JOURNAL RULES: Journal of Shoulder and Elbow Surgery (JSES)
+Publisher: Elsevier | Peer review: double-anonymized | Submission fee: USD $100
+Source: JSES Guide for Authors (summarized October 2026; re-check the live page before relying on it)
+Scope of this file: original research articles unless noted.
+
+==================================================
+1. FILES THE TOOL MUST PRODUCE
+==================================================
+- File 1: Title Page (separate .docx). Must NOT be inside the manuscript file.
+- File 2: Anonymized (blinded) manuscript (.docx).
+- Figures: each as its own separate file, named Figure_1, Figure_2, etc.
+- Tables: journal-specific rule says upload as separate individual files, not embedded.
+  (The general Elsevier section allows tables at the end of the text; the JSES-specific rule wins.)
+- Word only (.doc/.docx). PDF is not accepted. Single-column layout.
+
+==================================================
+2. PAGE LAYOUT (manuscript)
+==================================================
+- Font: Times New Roman, 12 pt.
+- Spacing: double-spaced throughout.
+- Margins: at least 1 inch (25 mm) on all sides.
+- Line numbering: continuous. REQUIRED - manuscripts without it are returned.
+- Page numbers: bottom right corner, consecutive, title page counts as page 1.
+- Remove all strikethrough and underline formatting (unless scientifically meaningful).
+- Each of these starts on a NEW PAGE (insert page break):
+  Abstract; Introduction; Materials and Methods; Results; Discussion; Conclusion;
+  References; Figure and Table Legends.
+
+==================================================
+3. SECTION HEADINGS (original research)
+==================================================
+Required order and names:
+  Introduction / Materials and Methods / Results / Discussion / Conclusions
+- Subheadings allowed in longer articles.
+- Note: the guide uses both "Conclusion" and "Conclusions". Default to "Conclusions".
+- Case reports, reviews and editorials do not need this structure.
+- IRB approval confirmation goes in Materials and Methods.
+- Give exact P values (not "p < 0.05"). Name devices/drugs with manufacturer and location.
+
+==================================================
+4. WORD LIMITS
+==================================================
+- Original and review articles: max 4,750 words, counting abstract + introduction +
+  methods + results + discussion + conclusion. Over the limit = returned unreviewed.
+- Case reports: max 2,250 words.
+- Abstract: max 400 words.
+- Letters to the Editor: max 2 pages.
+
+==================================================
+5. ABSTRACT
+==================================================
+- Max 400 words.
+- Must cover: purpose, basic methods, main findings (with statistical significance),
+  principal conclusions.
+- Structured headings are not specified by the guide (check a recent JSES article if unsure).
+- No references. If one is essential, cite author(s) and year.
+- Define any non-standard abbreviation at first mention.
+- At the END of the abstract, add:
+  * Level of Evidence (author-assigned; see section 9)
+  * Keywords: 6 to 8, in English; avoid multi-word keywords with "and"/"of";
+    only firmly established abbreviations
+  * Clinical trial registration number (if a clinical trial)
+- Case reports: keywords go at the end of the Introduction instead.
+
+==================================================
+6. TITLE PAGE (separate file) - must contain
+==================================================
+- Article title: concise, informative, avoid abbreviations.
+- For every author: first name, middle initial, last name, degrees (e.g., MD, PhD).
+- Affiliations: department, institution, full postal address incl. country.
+  Link authors to affiliations with lowercase superscript letters (a, b, c).
+- Present/permanent address changes: footnote with superscript Arabic numerals.
+- Corresponding author: full name, postal mailing address, email.
+- Acknowledgments: ONLY on the title page (never in the manuscript or as a title footnote).
+- Declaration of competing interests (if no separate declaration file is submitted).
+- Group authorship, if any, declared here.
+
+==================================================
+7. BLINDING (manuscript file)
+==================================================
+Manuscript must not contain: author names, affiliations, corresponding author info,
+acknowledgments.
+Also blind within the text: institution location, author initials, and references to the
+authors' own prior work. Method the journal specifies: black text highlight to black out text.
+Tool should FLAG likely identifying text for the user to confirm (not silently delete).
+
+==================================================
+8. REFERENCES
+==================================================
+- Reference list: sorted ALPHABETICALLY by first author's surname, then numbered 1, 2, 3...
+- In-text citations: SUPERSCRIPT numbers, NO brackets.
+  (Because the list is alphabetical, numbers in the text will not appear in order - expected.)
+- After sorting, all in-text numbers must be updated to match the new numbering.
+- Authors: list first 6, then "et al."
+- DOI required for every reference published 2002 to present.
+- Books: publisher, year, ISBN, relevant pages.
+- Every cited item must be in the list and vice versa. Every reference must be real.
+- Abstract references (if any) given in full.
+- Unpublished results / personal communications: preferably mention in text only.
+- "In press" = accepted for publication.
+- Web references: full URL + date last accessed.
+- Data references: prefix with [dataset].
+- Preprints: mark with "preprint" or server name + preprint DOI.
+- Remove reference-manager field codes before submission.
+- Tool approach: check the CSL style repository for a JSES style; adjust to the rules above.
+
+==================================================
+9. LEVEL OF EVIDENCE
+==================================================
+- Required for all clinically oriented manuscripts; placed at end of abstract.
+- Format: Level I-V + study type (Treatment, Prognosis, Diagnostic, Economic/Decision).
+- Tool: check that a Level of Evidence line exists; do not assign it automatically.
+
+==================================================
+10. TABLES
+==================================================
+- Editable text, not images.
+- Numbered consecutively in order of first citation; all must be cited in text.
+- Caption with each table; table notes below the table body.
+- No vertical lines, no shading in cells.
+- Uploaded as separate files (see section 1).
+
+==================================================
+11. FIGURES
+==================================================
+- Separate files, named Figure_1, Figure_2...; numbered in order of citation; all cited.
+- Every figure needs a caption (brief title + description). Captions go in the
+  "Figure and Table Legends" section of the manuscript (starts on new page).
+- Resolution: photos 300 dpi min; bitmapped line drawings 1000 dpi min.
+- No combining multiple images in one file (exception: before/after comparisons).
+- If AI tools were used to create an image, disclose in that caption.
+
+==================================================
+12. REQUIRED STATEMENTS / CHECKS
+==================================================
+- Funding statement: list funders with grant numbers in the standard Elsevier format,
+  or use Elsevier's standard "no specific grant" sentence (wording in the guide).
+- Conflict of interest: completed via Elsevier declarations tool (Word file uploaded).
+- IRB/Ethics approval statement with approval number and date.
+- Level of Evidence (section 9).
+- Generative AI declaration (only if AI tools used in writing): new section placed
+  BEFORE the reference list, titled
+  "Declaration of generative AI and AI-assisted technologies in the manuscript preparation process".
+  Not needed for basic grammar/spelling/reference tools.
+- Reporting checklists: CONSORT (RCTs, plus flow diagram), CARE (case reports, required),
+  PRISMA (systematic reviews, encouraged).
+
+==================================================
+13. JOURNAL'S OWN PRE-SUBMISSION CHECKLIST (use in compliance report)
+==================================================
+[ ] Article title
+[ ] All authors' names and degrees
+[ ] Departments and institutions
+[ ] Corresponding author details
+[ ] Funding statement
+[ ] Conflict of interest statements for all authors
+[ ] IRB/Ethics approval statement with approval number
+[ ] Acknowledgments (title page only)
+[ ] Title page uploaded as separate Word file
+[ ] No identifying information in blinded manuscript
+[ ] Figures and tables as separate files, not embedded
+[ ] Continuous line numbering present
+[ ] Word count <= 4,750 (abstract through conclusion)
+[ ] Abstract <= 400 words, ends with Level of Evidence + 6-8 keywords
+
+==================================================
+14. OTHER
+==================================================
+- Appendices labeled A, B...; tables/figures within them numbered Table A.1, Fig. A.1.
+- Preprints allowed; accepted preprinted papers must be published open access.
+- Videos must be fully blinded (authors and patients).

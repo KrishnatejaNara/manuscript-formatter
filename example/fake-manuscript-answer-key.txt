@@ -1,0 +1,99 @@
+ANSWER KEY: problems deliberately planted in fake-manuscript.docx
+Everything in the manuscript is invented (authors, institutions, patients, data, references).
+Use this list to check whether the tool fixes or flags each problem.
+
+Study: Arthroscopic Bankart repair (ABR) with vs without Hill-Sachs remplissage (HSR)
+in 112 contact athletes. Abstract = 343 words. Main document = about 2,300 words.
+
+--------------------------------------------------
+A. BLINDING (both journals: must be removed or flagged)
+--------------------------------------------------
+A1. Author names, degrees and affiliations at the top of the manuscript.
+A2. Corresponding author address and email in the manuscript.
+A3. Institution named in Methods ("Lakeshore University Health Centre").
+A4. Surgeon initials in Methods ("S.A.W., D.R.B.").
+A5. Self-citation phrased as "Our group previously reported ... at our institution [5]";
+    reference 5 is by the manuscript's own authors.
+A6. Acknowledgements section in the manuscript (names a person and a rugby club).
+A7. Conflict of interest statement naming an author by initials.
+A8. Hidden: Word file properties list "Samuel A. Whitfield" as the document author.
+
+--------------------------------------------------
+B. LAYOUT
+--------------------------------------------------
+B1. Calibri 11 pt (JSES needs Times New Roman 12; KSSTA suggests Times Roman 10).
+B2. Single line spacing (JSES needs double).
+B3. Margins 0.75 inch (JSES needs at least 1 inch).
+B4. No line numbers (required by both).
+B5. No page numbers (both require them; JSES: bottom right).
+B6. No page breaks between sections (JSES: each section on a new page).
+B7. Headings are bold text, not real Word heading styles.
+B8. One paragraph indented with spaces instead of an indent setting (Introduction, 3rd paragraph).
+B9. Underlined word ("without") and leftover strikethrough sentence in Surgical technique.
+
+--------------------------------------------------
+C. SECTION HEADINGS
+--------------------------------------------------
+C1. "Background" instead of "Introduction".
+C2. "Methods" (JSES wants "Materials and Methods"; KSSTA accepts "Methods").
+C3. "Conclusion" (both: "Conclusions").
+C4. "Limitations" is a subheading inside Discussion (fine; should be kept).
+
+--------------------------------------------------
+D. ABSTRACT, KEYWORDS, LEVEL OF EVIDENCE
+--------------------------------------------------
+D1. Abstract is unstructured (KSSTA needs Purpose / Methods / Results / Conclusions).
+D2. 343 words: OK for JSES (<=400), TOO LONG for KSSTA (<=300).
+D3. Abbreviations in abstract (ABR, HSL, HSR, ER, RTS, 3D-CT, WOSI): KSSTA forbids them.
+D4. A reference citation [3] in the abstract (both: avoid).
+D5. "p<0.05" instead of exact P values (JSES).
+D6. 5 keywords: OK for KSSTA (4-6), TOO FEW for JSES (6-8).
+D7. Level of Evidence sits in the title block, not at the end of the abstract (JSES).
+D8. Abbreviation "HSR" used in the title (JSES: avoid abbreviations in titles).
+
+--------------------------------------------------
+E. CITATIONS AND REFERENCES
+--------------------------------------------------
+E1. Mixed in-text styles: [1,2] brackets, superscript ^1,4^, and author-year
+    "(Nakamura et al., 2019)" which is reference 4. Should become one style:
+    JSES = superscript no brackets; KSSTA = [square brackets].
+E2. List is in order of appearance; both journals want ALPHABETICAL, then numbered,
+    with every in-text number renumbered to match.
+E3. Ref 13 is cited (Statistical analysis) but does not exist in the list.
+E4. Ref 12 (Castellanos) is in the list but never cited.
+E5. Ref 10 is a personal communication in the list (both: mention in text only).
+E6. Ref 2 is in APA style, unlike the others.
+E7. Ref 3 lists 8 authors (JSES: first 6, then et al.).
+E8. Ref 8 uses "et al." after one author and has broken punctuation.
+E9. Missing DOIs (refs 2, 3, 8, 11): JSES requires DOIs for 2002 onwards.
+E10. DOI written three different ways (doi:..., doi: ..., https://doi.org/...).
+E11. Ref 6 (book) has no ISBN or pages (JSES).
+E12. Ref 7 (website) has no access date and no https://.
+Note: all DOIs use the 10.5555 test prefix, so they will not resolve. The tool
+should not invent real DOIs or "fix" fake references using the internet.
+
+--------------------------------------------------
+F. TABLES AND FIGURES
+--------------------------------------------------
+F1. Table 2 is cited in the text before Table 1.
+F2. Tables have vertical lines and grey header shading (JSES: none).
+F3. Tables and figure are embedded in the text
+    (JSES: separate files; KSSTA: figure embedded is correct).
+F4. Table 1 notes sit under the table correctly; Table 2 has no notes defining its abbreviations.
+F5. Figure is low resolution (72 dpi; both need >=300 dpi). Tool can only FLAG this.
+F6. Figure has its title printed inside the image (KSSTA: not allowed).
+F7. Caption is "Figure 1: ...", ends with a period, and refers to colours
+    (KSSTA: bold "Fig. 1", no trailing period, avoid colour references).
+F8. No "Figure and Table Legends" section (JSES).
+
+--------------------------------------------------
+G. MISSING STATEMENTS
+--------------------------------------------------
+G1. No funding statement (both require one, even if no funding).
+G2. Ethics approval has no committee approval number or date.
+G3. No data availability statement (KSSTA).
+G4. No author contributions statement (KSSTA).
+G5. No list of abbreviations (KSSTA title page).
+G6. No ORCID IDs (KSSTA, if available).
+G7. No consent-to-publish statement (KSSTA, if applicable).
+The tool should FLAG these for the author to fill in, never make up the content.

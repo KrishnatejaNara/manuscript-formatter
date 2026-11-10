@@ -1,0 +1,185 @@
+JOURNAL RULES: Knee Surgery, Sports Traumatology, Arthroscopy (KSSTA)
+Publisher: Wiley (official journal of ESSKA) | Peer review: double-anonymized | Submission fee: none
+Source: KSSTA Author Guidelines (summarized October 2026; re-check the live page before relying on it)
+Scope of this file: original research articles unless noted.
+
+==================================================
+0. IMPORTANT: FREE FORMAT SUBMISSION
+==================================================
+KSSTA accepts "Free Format" first submissions: references in any style (if consistent),
+figures/tables embedded or separate. Strict formatting mostly matters at REVISION / acceptance.
+Tool should offer two modes:
+  - "Initial submission" mode: minimum requirements only (sections, abstract, blinding,
+    title page, declarations, legends).
+  - "Full format" mode: everything in this file.
+
+==================================================
+1. FILES THE TOOL MUST PRODUCE
+==================================================
+- File 1: Title Page, using the ESSKA Title Page Template
+  (https://www.esska.org/page/Journals_Title_Page_Template - user downloads it; the tool fills it).
+- File 2: Anonymized main text (.docx), with figures embedded in the body
+  (only submit figures separately if file size causes upload problems).
+- Supplementary files: separate, named ESM_1.pdf, ESM_2.mpg, etc.
+- Optional: Graphical Abstract (.doc + image, both named "Graphical Abstract").
+
+==================================================
+2. PAGE LAYOUT (main text)
+==================================================
+- Word (.docx). Plain font, e.g., Times Roman 10 pt.
+- Italics for emphasis (no underline/bold for emphasis).
+- Automatic page numbering.
+- Automatic line numbering.
+- NO field functions (strip reference-manager field codes, auto-fields).
+- Indents with tabs/indent settings, never spaces.
+- Tables built with Word's table function (not pasted spreadsheets).
+- Equations: Word equation editor or MathType.
+- Max 3 levels of headings.
+- Line spacing and margins: NOT specified in the guide. Default: double spacing,
+  2.5 cm margins - flag to user as an assumption.
+
+==================================================
+3. SECTION HEADINGS (original research)
+==================================================
+Must include: Abstract, Introduction, Methods, Results, Conclusions
+(Discussion expected between Results and Conclusions in standard research articles.)
+- Declarations section placed before the reference list (see section 8).
+- If an LLM (e.g., ChatGPT) was used, document it in the Methods section.
+- Abbreviations: define at first mention, use consistently after.
+- Footnotes (not endnotes). Footnotes cannot be only a citation and cannot contain
+  full reference details, figures or tables.
+
+==================================================
+4. WORD LIMITS
+==================================================
+- Abstract: max 300 words (structured); narrative review summary max 350 words.
+- Main text word limit: NOT stated in this guide. Flag to user: check the article-type
+  limits on the KSSTA site before submission.
+
+==================================================
+5. ABSTRACT
+==================================================
+- Structured, max 300 words, exactly FOUR headings:
+  Purpose / Methods / Results / Conclusions
+- Narrative reviews: single unstructured paragraph, max 350 words.
+- NO abbreviations and NO references in the abstract.
+- Level of Evidence: assigned by authors for all clinically oriented manuscripts
+  (KSSTA uses its own LoE table, linked on the site - not included in the PDF).
+- Keywords: 4 to 6.
+- Clinical trials: trial registration number + registration date as the LAST line of
+  the abstract; add "retrospectively registered" if applicable.
+
+==================================================
+6. TITLE PAGE (ESSKA template) - must contain
+==================================================
+- Title: concise, informative.
+- Author names.
+- Affiliations: institution, (department), city, (state), country.
+- Corresponding author clearly marked, with active email.
+- ORCID (16 digits) for authors, if available.
+- List of abbreviations used in the manuscript.
+- Acknowledgments (people, grants, funds), funding organizations named in full.
+- Author contribution statement (free text or CRediT).
+- "Declarations" section: Funding, Competing interests, Ethics approval, Consent,
+  Data/Materials/Code availability, Author contributions.
+
+==================================================
+7. BLINDING (main text)
+==================================================
+- Authors are responsible for full anonymization of the main text.
+- Remove author names, affiliations, acknowledgments, identifying institution names.
+- Tool should FLAG likely identifying text for the user to confirm.
+- Note: posting a preprint can compromise anonymity.
+
+==================================================
+8. DECLARATIONS (note the guide is inconsistent)
+==================================================
+Required statements:
+- Funding: funder name, grant number, which authors are supported, funder's role.
+  If none, a statement is still required (e.g., no funding received for this work).
+- Competing interests: financial and non-financial, last 3 years.
+- Ethics approval: committee name + approval number/date; Declaration of Helsinki;
+  retrospective-study waiver wording if applicable.
+- Consent to participate / Consent to publish (as applicable).
+- Data availability statement.
+- Clinical trial registration (if applicable).
+WHERE: the guide says both "on the separate title page under Declarations" AND
+"in a Declarations section before the reference list" (for ethics/consent).
+Default: put full Declarations on the title page AND a blinded Declarations section
+(no identifying names/institutions) before the references. Flag to user.
+- Reporting checklists recommended (EQUATOR): CONSORT, STROBE, PRISMA, STARD, CARE, etc.
+
+==================================================
+9. REFERENCES
+==================================================
+- In-text: numbers in SQUARE BRACKETS, on the line (not superscript).
+  Examples of form: [3]   [1-3, 7]
+- Reference list: ALPHABETICAL by first author's surname, then numbered consecutively.
+- Only works cited in the text and published/accepted. Personal communications and
+  unpublished work: mention in text only.
+- Journal names: standard ISO (LTWA) abbreviations; if unsure, full title.
+- Authors: all names ideally; "et al" accepted for long lists.
+- DOI as a full link (https://doi.org/...). Guide says "always include if available"
+  in one place and "only needed for online-only articles" in another. Default: always include.
+- Patterns (Springer-style, year in parentheses after authors):
+  Journal article:  Surname AB, Surname CD (Year) Title. Journal Abbrev Vol:Pages. https://doi.org/...
+  Long author list: Surname AB, Surname CD, Surname EF et al (Year) Title. Journal Vol:Pages
+  Article by DOI:   Surname AB, Surname CD (Year) Title. Journal Abbrev. https://doi.org/...
+  Book:             Surname AB, Surname CD (Year) Title. Publisher, City
+  Book chapter:     Surname AB (Year) Chapter title. In: Editor AB (ed) Book title, Nth edn. Publisher, City, pp X-Y
+  Online document:  Surname AB (Year) Title. In: Source. Publisher. URL. Accessed DD Mon YYYY
+- Tool approach: check the CSL style repository for a KSSTA style (or Springer basic
+  brackets style) and adjust to the rules above.
+
+==================================================
+10. TABLES
+==================================================
+- Arabic numerals; cited in text in consecutive order.
+- Caption (title) for each table explaining its components.
+- Previously published material: source reference at the end of the caption.
+- Table footnotes: superscript lowercase letters (or asterisks for significance),
+  placed beneath the table body.
+
+==================================================
+11. FIGURES
+==================================================
+- Arabic numerals; cited in consecutive order; parts labeled a, b, c (lowercase).
+- Embedded in the body of the text (separate only if upload size is a problem).
+- Figure file naming (if separate): Fig1.eps, Fig2.tif...
+- Captions go in the text file, not in the figure. Caption format:
+  "Fig." in BOLD + figure number in BOLD, NO punctuation after the number,
+  NO period at the end of the caption.
+- No titles/captions inside the image itself.
+- Resolution: line art 1200 dpi; photos/halftones 300 dpi; combination art 600 dpi.
+- Lettering: Arial/Helvetica, consistent 8-12 pt.
+- Colour: RGB; don't refer to colour in captions if printed in black and white.
+- Appendix figures continue main numbering (no A1, A2); online supplementary
+  figures numbered separately.
+
+==================================================
+12. SUPPLEMENTARY MATERIAL
+==================================================
+- Cite in text as "Online Resource 1", "Online Resource 2"...
+- Files named ESM_1, ESM_2...; each needs a concise caption.
+- Text/presentations as PDF; spreadsheets .csv/.xlsx.
+
+==================================================
+13. COMPLIANCE REPORT CHECKLIST
+==================================================
+[ ] Title page on ESSKA template, separate from main text
+[ ] ORCID IDs present (if available)
+[ ] Abbreviations list on title page
+[ ] Author contributions statement
+[ ] Main text fully anonymized
+[ ] Abstract <= 300 words with exactly Purpose / Methods / Results / Conclusions
+[ ] No abbreviations or references in abstract
+[ ] 4-6 keywords
+[ ] Level of Evidence assigned
+[ ] Trial registration as last line of abstract (if clinical trial)
+[ ] Declarations: funding, competing interests, ethics approval, consent, data availability
+[ ] LLM use described in Methods (if used)
+[ ] Automatic page and line numbering, no field codes
+[ ] <= 3 heading levels
+[ ] In-text citations in [square brackets]; list alphabetical and numbered
+[ ] Figure captions: bold "Fig. N", no trailing punctuation
+[ ] Tables/figures cited in consecutive order
