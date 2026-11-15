@@ -22,6 +22,7 @@ class App(tk.Tk):
         self.geometry("860x720")
         self.paper = tk.StringVar()
         self.journal = tk.StringVar(value=next(iter(NAMES)))
+        self.track = tk.BooleanVar(value=True)
         self.out_dir = tk.StringVar()     # defaults to the manuscript's own folder
         self.boxes = {}          # (request, context) -> its text box
         self.last_out = None
@@ -40,6 +41,7 @@ class App(tk.Tk):
             widget.grid(row=i, column=1, sticky="ew", padx=6)
             if choose:
                 ttk.Button(top, text="Choose…", command=choose).grid(row=i, column=2)
+        ttk.Checkbutton(top, text="Show edits as tracked changes in Word", variable=self.track).grid(row=3, column=1, sticky="w", pady=3)
 
         # 2. The form (scrollable) and 3. the list of changes, as two tabs
         self.tabs = ttk.Notebook(self)
@@ -122,7 +124,8 @@ class App(tk.Tk):
         answers = {k: box.get("1.0", "end") for k, box in self.boxes.items()}
         out_dir = self.out_dir.get() or str(Path(self.paper.get()).parent)
         try:
-            self.last_out, report = run(self.paper.get(), JOURNALS[NAMES[self.journal.get()]], out_dir, answers)
+            self.last_out, report = run(self.paper.get(), JOURNALS[NAMES[self.journal.get()]], out_dir, answers,
+                                        self.track.get())
         except Exception as e:
             return messagebox.showerror("Formatting failed", str(e))
         self.show_changes(report)

@@ -15,6 +15,8 @@ class Run:
     sup: bool = False
     highlight: bool = False
     cite: Optional[List[int]] = None   # set when this run is an in-text citation (original ref numbers)
+    ins: bool = False                  # added by the tool: shown as a tracked insertion
+    deleted: bool = False              # removed by the tool: shown as a tracked deletion
 
 
 ASKED = []     # every (request, context) the last run needed from the author, for the app's form
@@ -30,8 +32,8 @@ def note(text, context=""):
         if key not in ASKED:
             ASKED.append(key)
         if ANSWERS.get(key):
-            return Run(text[:m.start()] + ANSWERS[key])
-    return Run(text, bold=True, highlight=True)
+            return Run(text[:m.start()] + ANSWERS[key], ins=True)
+    return Run(text, bold=True, highlight=True, ins=True)
 
 
 @dataclass
@@ -39,6 +41,7 @@ class Para:
     runs: List[Run]
     heading: bool = False         # True for a subheading inside a section
     space_indent: bool = False    # the original was indented with typed spaces
+    original: Optional[list] = None   # the runs as read, to show changes against
 
     @property
     def text(self):
@@ -69,6 +72,7 @@ class Section:
     key: Optional[str]      # e.g. "methods"; None if not recognised
     title: str
     blocks: list = field(default_factory=list)   # Para / Table / Figure
+    original_title: str = ""
 
 
 @dataclass

@@ -1,7 +1,11 @@
 """Writes fresh Word files. Building new files (instead of editing the original)
 means hidden leftovers such as the author's name in File > Properties never carry over."""
 import io
+import itertools
 import re
+from dataclasses import replace
+from datetime import datetime, timezone
+from difflib import SequenceMatcher
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_COLOR_INDEX
@@ -12,6 +16,8 @@ from docx.shared import Emu, Inches, Pt, RGBColor
 from .checks import identifiers
 from .model import Figure, Para, Report, Run, Table, highlight, note
 
+TRACK_CHANGES = False   # set by run(): show the tool's edits as Word tracked changes
+TOKEN = re.compile(r"\s+|[^\W\d_]+|\d+|.", re.S)   # words, numbers, spaces and single symbols
 COLOURS = {Report.TODO: "F8CBAD", Report.MANUAL: "FFE699", Report.FIXED: "C6EFCE", Report.SUPPLIED: "BDD7EE"}
 
 
@@ -59,20 +65,67 @@ def xml(tag, attrs):
     return el
 
 
-def add(d, runs, style=None, new_page=False):
+def add(d, runs, style=None, new_page=False, original=None):
+    """A paragraph. `original` is the text as the author wrote it, to show the changes against."""
+    if TRACK_CHANGES and original is not None:
+        runs = tracked(original, runs)
+    runs = [r for r in runs if r.text]
     p = d.add_paragraph(style=style)
     p.paragraph_format.page_break_before = new_page
     for r in runs:
-        if r.text:
-            run = p.add_run(r.text)
-            run.bold, run.italic, run.font.superscript = r.bold or None, r.italic or None, r.sup or None
-            if r.highlight:
-                run.font.highlight_color = WD_COLOR_INDEX.YELLOW
+        run = p.add_run(r.text)
+        run.bold, run.italic, run.font.superscript = r.bold or None, r.italic or None, r.sup or None
+        if r.highlight:
+            run.font.highlight_color = WD_COLOR_INDEX.YELLOW
+        if TRACK_CHANGES and (r.ins or r.deleted):
+            change = revision("w:del" if r.deleted else "w:ins")
+            run._r.addprevious(change)
+            change.append(run._r)
+            for t in change.iter(qn("w:t")):
+                t.tag = qn("w:delText") if r.deleted else t.tag
+    if TRACK_CHANGES and runs and (all(r.ins for r in runs) or all(r.deleted for r in runs)):
+        mark = xml("w:rPr", {})                # the paragraph itself was added or removed
+        mark.append(revision("w:ins" if runs[0].ins else "w:del"))
+        p._p.get_or_add_pPr().append(mark)
     return p
 
 
+REVISION_IDS, NOW = itertools.count(1), datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def revision(tag):
+    return xml(tag, {"w:id": str(next(REVISION_IDS)), "w:author": "Manuscript Formatter", "w:date": NOW})
+
+
+def tracked(old_runs, new_runs):
+    """The new runs, with words that differ from the original marked as deleted or inserted."""
+    old = [(t, r) for r in old_runs for t in TOKEN.findall(r.text)]
+    new = [(t, r) for r in new_runs for t in TOKEN.findall(r.text)]
+    ops = [list(o) for o in SequenceMatcher(None, [t for t, _ in old], [t for t, _ in new], autojunk=False).get_opcodes()]
+    for prev, op, nxt in zip(ops, ops[1:], ops[2:]):       # a space or a few letters between two edits: one edit
+        between = "".join(t for t, _ in old[op[1]:op[2]])
+        if op[0] == "equal" and prev[0] != "equal" and nxt[0] != "equal" and (between.isspace() or len(between) <= 3):
+            op[0] = "replace"
+    out = []
+    for same, group in itertools.groupby(ops, key=lambda o: o[0] == "equal"):
+        group = list(group)
+        i1, i2, j1, j2 = group[0][1], group[-1][2], group[0][3], group[-1][4]
+        if same:
+            out += [replace(r, text=t, ins=False) for t, r in new[j1:j2]]
+        else:
+            out += [replace(r, text=t, ins=False, deleted=True) for t, r in old[i1:i2]]
+            out += [replace(r, text=t, ins=True) for t, r in new[j1:j2]]
+    merged = []                                             # join neighbouring tokens that look the same
+    for r in out:
+        if merged and replace(merged[-1], text="") == replace(r, text=""):
+            merged[-1] = replace(r, text=merged[-1].text + r.text)
+        else:
+            merged.append(r)
+    return merged
+
+
 def add_table(d, t):
-    add(d, table_caption(t))
+    add(d, table_caption(t), original=t.caption.original if t.caption else None)
     table = d.add_table(rows=len(t.rows), cols=len(t.rows[0]))
     borders = xml("w:tblBorders", {})            # horizontal rules only: no vertical lines, no shading
     for edge in ("top", "bottom", "insideH"):
@@ -84,7 +137,7 @@ def add_table(d, t):
             p.paragraph_format.line_spacing = 1.0
             add_runs(p, [Run(cell.text, bold=i == 0, highlight=cell.highlight)])
     for n in t.notes:
-        add(d, n.runs)
+        add(d, n.runs, original=n.original)
 
 
 def add_runs(p, runs):
@@ -108,7 +161,7 @@ def title_page(ms, j, statements, path):
     mark = lambda m: re.sub(r"\d+", lambda n: "abcdefghij"[int(n[0]) - 1], m) if letters else m
     for p in ms.notice:
         add(d, p.runs)
-    add(d, ms.title.runs, style="Title")
+    add(d, ms.title.runs, style="Title", original=ms.title.original)
     if ms.running_title:
         add(d, ms.running_title.runs)
     authors = []
@@ -139,19 +192,20 @@ def manuscript(ms, j, statements, path):
     h, new_page = j["headings"], set(j["new_page_before"])
     for p in ms.notice:
         add(d, p.runs)
-    add(d, ms.title.runs, style="Title")
+    add(d, ms.title.runs, style="Title", original=ms.title.original)
     add(d, [Run(h["abstract"])], style="Heading 1", new_page="abstract" in new_page)
     for p in ms.abstract:
-        add(d, p.runs)
+        add(d, p.runs, original=p.original)
     add(d, [Run("Level of Evidence: ", bold=True),
             Run(ms.level_of_evidence) if ms.level_of_evidence else note("[AUTHOR TO SUPPLY: Level of Evidence]")])
     add(d, [Run("Keywords: ", bold=True), Run("; ".join(ms.keywords))] + ([note(ms.keyword_note)] if ms.keyword_note else []))
 
     for s in ms.sections:
-        add(d, [Run(s.title)], style="Heading 1", new_page=s.key in new_page)
+        add(d, [Run(s.title)], style="Heading 1", new_page=s.key in new_page, original=[Run(s.original_title)])
         waiting = sorted([b for b in s.blocks if not isinstance(b, Para)], key=lambda b: (isinstance(b, Figure), b.number))
         for b in [b for b in s.blocks if isinstance(b, Para)]:
-            add(d, [Run(r.text) for r in b.runs] if b.heading else b.runs, style="Heading 2" if b.heading else None)
+            add(d, [Run(r.text) for r in b.runs] if b.heading else b.runs, style="Heading 2" if b.heading else None,
+                original=b.original)
             for item in list(waiting):          # tables/figures go after the paragraph that first mentions them
                 word = "Table" if isinstance(item, Table) else "Fig"
                 if re.search(rf"{word}\w*\.?\s*{item.number}\b", b.text):
@@ -171,14 +225,14 @@ def manuscript(ms, j, statements, path):
 
     add(d, [Run(h["references"])], style="Heading 1", new_page="references" in new_page)
     for r in ms.references:
-        add(d, [Run(f"{r.new_number}. ")] + r.runs)
+        add(d, [Run(f"{r.new_number}. ")] + r.runs, original=[Run(r.raw.strip())])
 
     if j["legends_section"]:
         add(d, [Run(h["legends"])], style="Heading 1", new_page="legends" in new_page)
         for f in sorted(ms.blocks(Figure), key=lambda f: f.number):
-            add(d, f.caption.runs)
+            add(d, f.caption.runs, original=f.caption.original)
         for t in sorted(ms.blocks(Table), key=lambda t: t.number):
-            add(d, table_caption(t))
+            add(d, table_caption(t), original=t.caption.original if t.caption else None)
     d.save(path)
 
 
@@ -187,7 +241,7 @@ def embed(d, item, j):
         add_table(d, item)
     elif isinstance(item, Figure) and not j["figures_in_separate_files"]:
         d.add_paragraph().add_run().add_picture(io.BytesIO(item.image), width=Emu(item.width_emu))
-        add(d, item.caption.runs)
+        add(d, item.caption.runs, original=item.caption.original)
 
 
 def separate_files(ms, j, out_dir):

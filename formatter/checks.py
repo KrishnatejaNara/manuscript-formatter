@@ -72,7 +72,9 @@ def abstract_and_title(ms, j, report, abstract_words):
         request = f"[AUTHOR TO SUPPLY: restructure the abstract under {heads}]"
         rewritten = note(request)
         if not rewritten.highlight:              # the author typed a new abstract in the app: it replaces the old one
-            ms.abstract = [Para([Run(line)]) for line in rewritten.text.splitlines() if line.strip()]
+            for p in ms.abstract:
+                p.runs = []
+            ms.abstract += [Para([Run(line, ins=True)]) for line in rewritten.text.splitlines() if line.strip()]
             abstract_words = word_count(ms.abstract)
         else:
             ms.abstract.insert(0, Para([rewritten]))
@@ -147,7 +149,7 @@ def tables_and_figures(ms, j, report):
         body = re.sub(r"(?i)^\s*(figure|fig\.?)\s*\d+\s*[.:]?\s*", "", f.caption.text)
         if not j["caption_ends_with_period"]:
             body = body.rstrip(". ")
-        f.caption = Para([Run(j["caption_label"].format(n=f.number), bold=True), Run(" " + body)])
+        f.caption = Para([Run(j["caption_label"].format(n=f.number), bold=True), Run(" " + body)], original=f.caption.original)
         report.add(Report.FIXED, "Figure captions", f"Figure {f.number} caption now starts with '{j['caption_label'].format(n=f.number)}'"
                    + ("" if j["caption_ends_with_period"] else " and has no full stop at the end") + ".")
         if j["flag_colour_words_in_captions"]:
