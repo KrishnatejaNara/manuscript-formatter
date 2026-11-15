@@ -17,8 +17,20 @@ class Run:
     cite: Optional[List[int]] = None   # set when this run is an in-text citation (original ref numbers)
 
 
-def note(text):
-    """A highlighted message for the author. Never contains invented content."""
+ASKED = []     # every (request, context) the last run needed from the author, for the app's form
+ANSWERS = {}   # (request, context) -> the author's own text, typed into the app
+
+
+def note(text, context=""):
+    """A highlighted message for the author, or the author's answer to it if they gave one.
+    `context` tells apart requests with the same text (e.g. which reference needs a DOI)."""
+    m = re.search(r"\[AUTHOR TO SUPPLY: [^\]]*\]", text)
+    if m:
+        key = (m[0], context)
+        if key not in ASKED:
+            ASKED.append(key)
+        if ANSWERS.get(key):
+            return Run(text[:m.start()] + ANSWERS[key])
     return Run(text, bold=True, highlight=True)
 
 
@@ -146,7 +158,8 @@ class Report:
     TODO = "Needs your input"
     MANUAL = "Check by hand"
     FIXED = "Fixed automatically"
-    ORDER = [TODO, MANUAL, FIXED]
+    SUPPLIED = "Filled in by you"
+    ORDER = [TODO, MANUAL, SUPPLIED, FIXED]
 
     def __init__(self):
         self.items = []   # (status, title, [details])

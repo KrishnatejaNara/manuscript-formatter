@@ -22,10 +22,33 @@ Output goes to `output/<manuscript>_<JOURNAL>/`:
 - `Manuscript_Blinded.docx`: the anonymized manuscript
 - JSES only: `Table_N.docx` and `Figure_N.png` as separate files
 
+## Desktop app
+
+```bash
+.venv/bin/python app.py
+```
+
+Choose the manuscript, the journal and where to save. The **Fill in** tab lists
+everything only the author can supply (DOIs, ethics approval, funding, ORCID iDs, …);
+type answers into any boxes you like, then press **Format manuscript**. Your text goes
+exactly where the highlighted note would have been; empty boxes stay as notes. The
+**Changes** tab then lists what was fixed, filled in and still needs you.
+
+Tkinter comes with the python.org installer for macOS. With Homebrew Python, run
+`brew install python-tk` first.
+
+To make a double-clickable `Manuscript Formatter.app` (in `dist/`):
+
+```bash
+.venv/bin/pip install pyinstaller
+.venv/bin/pyinstaller --windowed --name "Manuscript Formatter" --add-data styles:styles --collect-data citeproc --collect-all docx app.py
+```
+
 ## How it works
 
 ```
 format_manuscript.py        command-line entry point
+app.py                      desktop app (tkinter)
 formatter/
   reader.py                 .docx -> a simple model (title block, abstract, sections, tables, figures, references)
   references.py             parse references, find citations, sort/renumber, render with a CSL style

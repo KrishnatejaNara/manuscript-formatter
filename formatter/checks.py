@@ -6,7 +6,7 @@ judgement gets a highlighted note and a report entry instead.
 import re
 from dataclasses import replace
 
-from .model import Figure, Para, Report, Run, Table, highlight, insert, note
+from .model import ANSWERS, Figure, Para, Report, Run, Table, highlight, insert, note
 
 ABBREVIATION = r"\b(?:\d[A-Z]-)?[A-Z]{2,}[A-Z0-9]*\b"
 COMMON_ABBREVIATIONS = {"CT", "MRI", "SD", "BMI", "USA", "UK"}
@@ -67,6 +67,17 @@ def headings(ms, j, report):
 
 
 def abstract_and_title(ms, j, report, abstract_words):
+    if j["abstract_headings"] and not re.match(r"\s*\w+:", ms.abstract[0].text):
+        heads = " / ".join(j["abstract_headings"])
+        request = f"[AUTHOR TO SUPPLY: restructure the abstract under {heads}]"
+        rewritten = note(request)
+        if not rewritten.highlight:              # the author typed a new abstract in the app: it replaces the old one
+            ms.abstract = [Para([Run(line)]) for line in rewritten.text.splitlines() if line.strip()]
+            abstract_words = word_count(ms.abstract)
+        else:
+            ms.abstract.insert(0, Para([rewritten]))
+            report.add(Report.TODO, "Abstract structure", f"{j['short']} needs exactly these headings: {heads}. "
+                       "The tool does not split it, because that means deciding where each part begins.")
     if abstract_words > j["abstract_max_words"]:
         report.add(Report.TODO, "Abstract too long",
                    f"{abstract_words} words; the limit is {j['abstract_max_words']}. The tool does not shorten your text.")
@@ -77,17 +88,12 @@ def abstract_and_title(ms, j, report, abstract_words):
         if found:
             report.add(Report.TODO, "Abbreviations in the abstract",
                        f"{j['short']} allows none. Highlighted: {', '.join(dict.fromkeys(found))}.")
-    if j["abstract_headings"] and not re.match(r"\s*\w+:", ms.abstract[0].text):
-        heads = " / ".join(j["abstract_headings"])
-        ms.abstract.insert(0, Para([note(f"[AUTHOR TO SUPPLY: restructure the abstract under {heads}]")]))
-        report.add(Report.TODO, "Abstract structure", f"{j['short']} needs exactly these headings: {heads}. "
-                   "The tool does not split it, because that means deciding where each part begins.")
     low, high = j["keywords"]
     if not low <= len(ms.keywords) <= high:
         report.add(Report.TODO, "Keywords", f"{len(ms.keywords)} keywords; {j['short']} needs {low}-{high}.")
-        ms.keyword_note = f" [AUTHOR TO SUPPLY: {low - len(ms.keywords)} more keyword(s)]" if len(ms.keywords) < low \
+        ms.keyword_note = ("; " if ms.keywords else "") + f"[AUTHOR TO SUPPLY: {low - len(ms.keywords)} more keyword(s)]" if len(ms.keywords) < low \
             else f" [AUTHOR TO CHECK: remove {len(ms.keywords) - high} keyword(s)]"
-    if ms.level_of_evidence is None:
+    if ms.level_of_evidence is None and not ANSWERS.get(("[AUTHOR TO SUPPLY: Level of Evidence]", "")):
         report.add(Report.TODO, "Level of Evidence", "Missing. Add it at the end of the abstract (the tool never assigns it).")
     elif ms.original.get("level_of_evidence_in_title_block"):
         report.add(Report.FIXED, "Level of Evidence", "Moved from the title block to the end of the abstract.")
@@ -133,8 +139,9 @@ def tables_and_figures(ms, j, report):
         used = re.findall(ABBREVIATION, " ".join(c.text for row in t.rows for c in row))
         missing = [a for a in dict.fromkeys(used) if a + "," not in defined and a not in COMMON_ABBREVIATIONS]
         if missing:
-            t.notes.append(Para([note(f"[AUTHOR TO SUPPLY: table note defining {', '.join(missing)}]")]))
-            report.add(Report.TODO, "Table notes", f"Table {t.number} does not define: {', '.join(missing)}.")
+            t.notes.append(Para([n := note(f"[AUTHOR TO SUPPLY: table note defining {', '.join(missing)}]", f"Table {t.number}")]))
+            if n.highlight:
+                report.add(Report.TODO, "Table notes", f"Table {t.number} does not define: {', '.join(missing)}.")
 
     for f in ms.blocks(Figure):
         body = re.sub(r"(?i)^\s*(figure|fig\.?)\s*\d+\s*[.:]?\s*", "", f.caption.text)
@@ -200,8 +207,9 @@ def statements(ms, j, report):
             has_number = re.search(r"\d{3,}|\b(no\.|number)\s*\w+", m[0], re.I)
             has_date = re.search(r"\b(19|20)\d{2}\b", m[0])
             if not (has_number and has_date):
-                insert(p, m.end(), [note(" [AUTHOR TO SUPPLY: ethics approval number and date]")])
-                report.add(Report.TODO, "Ethics approval", "The statement in Methods has no approval number or date.")
+                insert(p, m.end(), [n := note(" [AUTHOR TO SUPPLY: ethics approval number and date]")])
+                if n.highlight:
+                    report.add(Report.TODO, "Ethics approval", "The statement in Methods has no approval number or date.")
             out["ethics_approval"] = [Run(m[0].strip() + ".")] + ([] if has_number and has_date
                                                                    else [note(" [AUTHOR TO SUPPLY: committee name, approval number and date]")])
             break
@@ -214,8 +222,9 @@ def statements(ms, j, report):
 
     for key, label in j["title_page_statements"].items():
         if key not in out:
-            out[key] = [note(f"[AUTHOR TO SUPPLY: {label.lower()} statement]")]
-            report.add(Report.TODO, label, "No statement found; a highlighted note was added. The tool never writes it for you.")
+            out[key] = [n := note(f"[AUTHOR TO SUPPLY: {label.lower()} statement]")]
+            if n.highlight:
+                report.add(Report.TODO, label, "No statement found; a highlighted note was added. The tool never writes it for you.")
     if j["orcid"]:
         report.add(Report.TODO, "ORCID iDs", "Add each author's ORCID iD on the title page, if they have one.")
     if j["abbreviations_list"]:
