@@ -12,7 +12,7 @@ from docx.shared import Emu, Inches, Pt, RGBColor
 from .checks import identifiers
 from .model import Figure, Para, Report, Run, Table, highlight, note
 
-COLOURS = {Report.TODO: "F8CBAD", Report.MANUAL: "FFE699", Report.FIXED: "C6EFCE"}
+COLOURS = {Report.TODO: "F8CBAD", Report.MANUAL: "FFE699", Report.FIXED: "C6EFCE", Report.SUPPLIED: "BDD7EE"}
 
 
 def new_document(j, line_numbers=True, first_page=1):
@@ -121,7 +121,7 @@ def title_page(ms, j, statements, path):
     if j["orcid"]:
         add(d, [Run("ORCID iDs", bold=True)])
         for a in ms.authors:
-            add(d, [Run(a.name + ": "), note("[AUTHOR TO SUPPLY: ORCID iD, if available]")])
+            add(d, [Run(a.name + ": "), note("[AUTHOR TO SUPPLY: ORCID iD, if available]", a.name)])
     if j["abbreviations_list"]:
         add(d, [Run("Abbreviations", bold=True)])
         add(d, [note("[AUTHOR TO SUPPLY: list of abbreviations used in the manuscript]")])

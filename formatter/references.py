@@ -227,15 +227,16 @@ def process(ms, journal, report, root, author_surnames):
     # 5. Notes for anything only the author can supply
     missing_doi, books = [], []
     for r in refs:
+        ref = f"Reference {r.new_number}: " + "".join(x.text for x in r.runs)
         y = r.csl.get("issued", {}).get("date-parts", [[0]])[0][0]
         if r.kind == "article" and "DOI" not in r.csl and y >= journal["doi_required_from_year"]:
-            r.runs.append(note(" [AUTHOR TO SUPPLY: DOI]"))
+            r.runs.append(note(" [AUTHOR TO SUPPLY: DOI]", ref))
             missing_doi.append(r)
         if r.kind == "book" and journal["books_need_isbn_and_pages"]:
-            r.runs.append(note(" [AUTHOR TO SUPPLY: ISBN and relevant pages]"))
+            r.runs.append(note(" [AUTHOR TO SUPPLY: ISBN and relevant pages]", ref))
             books.append(r)
         if r.kind == "web":
-            r.runs.append(note(" [AUTHOR TO SUPPLY: date last accessed]"))
+            r.runs.append(note(" [AUTHOR TO SUPPLY: date last accessed]", ref))
         if r.kind == "other":
             r.runs.append(note(" [AUTHOR TO CHECK: the tool could not read this reference; format it by hand]"))
         if r.et_al:

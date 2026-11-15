@@ -2,13 +2,17 @@
 from pathlib import Path
 
 from . import checks, reader, references, writer
-from .model import Report
+from .model import ANSWERS, ASKED, Report
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def run(manuscript_path, journal, out_root=ROOT / "output"):
-    """Read, check, fix and write. Returns the output folder."""
+def run(manuscript_path, journal, out_root=ROOT / "output", answers=None):
+    """Read, check, fix and write. Returns the output folder and the report.
+    `answers` maps (request, context) from model.ASKED to the author's text."""
+    ASKED.clear()
+    ANSWERS.clear()
+    ANSWERS.update({k: v.strip() for k, v in (answers or {}).items() if v.strip()})
     manuscript_path = Path(manuscript_path)
     ms = reader.read(manuscript_path)
     report = Report()
@@ -27,5 +31,9 @@ def run(manuscript_path, journal, out_root=ROOT / "output"):
     writer.title_page(ms, journal, statements, out / "Title_Page.docx")
     writer.manuscript(ms, journal, statements, out / "Manuscript_Blinded.docx")
     files = ["Title_Page.docx", "Manuscript_Blinded.docx"] + writer.separate_files(ms, journal, out)
+    for (request, context), text in ANSWERS.items():
+        if (request, context) in ASKED:
+            what = request.strip("[]").split(": ", 1)[1]
+            report.add(Report.SUPPLIED, what[0].upper() + what[1:], (f"{context}: " if context else "") + text)
     writer.report_file(report, journal, manuscript_path.name, files, out / "Compliance_Report.docx")
     return out, report

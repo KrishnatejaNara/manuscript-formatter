@@ -3,3 +3,6 @@ output/
 __pycache__/
 .DS_Store
 CLAUDE.md
+build/
+dist/
+*.spec
