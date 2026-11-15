@@ -34,6 +34,13 @@ type answers into any boxes you like, then press **Format manuscript**. Your tex
 exactly where the highlighted note would have been; empty boxes stay as notes. The
 **Changes** tab then lists what was fixed, filled in and still needs you.
 
+With **Show edits as tracked changes in Word** ticked (or `--track-changes` on the
+command line), the manuscript and title page show the tool's text edits as tracked
+changes by "Manuscript Formatter": renamed headings, renumbered citations, restyled
+references and captions, added notes and your answers. Formatting (font, spacing,
+margins) is applied directly. Choose **Review > Accept > Accept All Changes** before
+submitting: deleted text stays inside the file until you do.
+
 Tkinter comes with the python.org installer for macOS. With Homebrew Python, run
 `brew install python-tk` first.
 
